@@ -1,0 +1,393 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Основные сущности согласно ТЗ
+
+model Merchant {
+  id        String   @id @default(cuid())
+  name      String
+  timezone  String   @default("UTC")
+  currency  String   @default("RUB")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  marketplaceAccounts MarketplaceAccount[]
+  products          Product[]
+  suppliers         Supplier[]
+  purchaseOrders    PurchaseOrder[]
+  users             User[]
+
+  @@map("merchants")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  firstName String   @map("first_name")
+  lastName  String   @map("last_name")
+  role      UserRole @default(OPERATOR)
+  isActive  Boolean  @default(true) @map("is_active")
+  merchantId String? @map("merchant_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  merchant     Merchant? @relation(fields: [merchantId], references: [id])
+  auditLogs   AuditLog[]
+
+  @@map("users")
+}
+
+model MarketplaceAccount {
+  id        String   @id @default(cuid())
+  type      MarketplaceType
+  name      String
+  credentials Json
+  status    MarketplaceStatus @default(ACTIVE)
+  merchantId String @map("merchant_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  merchant Merchant @relation(fields: [merchantId], references: [id])
+  offers   Offer[]
+
+  @@map("marketplace_accounts")
+}
+
+model Product {
+  id        String   @id @default(cuid())
+  sku       String
+  title     String
+  brand     String?
+  category  String
+  barcode   String?
+  attributes Json
+  merchantId String @map("merchant_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  merchant        Merchant @relation(fields: [merchantId], references: [id])
+  offers          Offer[]
+  pricePolicies   PricePolicy[]
+  costs           Cost[]
+  supplierSkus    SupplierSKU[]
+  purchaseOrderLines PurchaseOrderLine[]
+
+  @@unique([sku, merchantId])
+  @@map("products")
+}
+
+model Offer {
+  id                    String   @id @default(cuid())
+  externalId            String   @map("external_id")
+  listingStatus         ListingStatus @default(DRAFT)
+  url                   String?
+  marketplaceAccountId  String @map("marketplace_account_id")
+  productId             String @map("product_id")
+  createdAt             DateTime @default(now()) @map("created_at")
+  updatedAt             DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  marketplaceAccount MarketplaceAccount @relation(fields: [marketplaceAccountId], references: [id])
+  product            Product @relation(fields: [productId], references: [id])
+  stockSnapshots     StockSnapshot[]
+  salesDaily         SalesDaily[]
+  competitorSnapshots CompetitorSnapshot[]
+  listingDrafts      ListingDraft[]
+  abTests            ABTest[]
+
+  @@unique([externalId, marketplaceAccountId])
+  @@map("offers")
+}
+
+model PricePolicy {
+  id                    String   @id @default(cuid())
+  minMarginPct         Float    @map("min_margin_pct")
+  maxPriceDeltaPctDay  Float    @map("max_price_delta_pct_day")
+  mode                  PricingMode @default(MANUAL)
+  productId             String @map("product_id")
+  createdAt             DateTime @default(now()) @map("created_at")
+  updatedAt             DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  product Product @relation(fields: [productId], references: [id])
+
+  @@map("price_policies")
+}
+
+model StockSnapshot {
+  id        String   @id @default(cuid())
+  onHand    Int      @map("on_hand")
+  reserved  Int      @default(0)
+  warehouse String
+  offerId   String   @map("offer_id")
+  timestamp DateTime @default(now())
+  createdAt DateTime @default(now()) @map("created_at")
+
+  // Relations
+  offer Offer @relation(fields: [offerId], references: [id])
+
+  @@map("stock_snapshots")
+}
+
+model SalesDaily {
+  id            String   @id @default(cuid())
+  units         Int
+  revenue       Float
+  returnsUnits  Int      @default(0) @map("returns_units")
+  returnsAmount Float    @default(0) @map("returns_amount")
+  offerId       String   @map("offer_id")
+  date          DateTime
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  // Relations
+  offer Offer @relation(fields: [offerId], references: [id])
+
+  @@unique([offerId, date])
+  @@map("sales_daily")
+}
+
+model CompetitorSnapshot {
+  id                    String   @id @default(cuid())
+  competitorsCount      Int      @map("competitors_count")
+  minCompetitorPrice    Float?   @map("min_competitor_price")
+  buyboxOwner           String?  @map("buybox_owner")
+  offerId               String   @map("offer_id")
+  timestamp             DateTime @default(now())
+  createdAt             DateTime @default(now()) @map("created_at")
+
+  // Relations
+  offer Offer @relation(fields: [offerId], references: [id])
+
+  @@map("competitor_snapshots")
+}
+
+model Supplier {
+  id        String   @id @default(cuid())
+  name      String
+  contacts  Json
+  terms     Json
+  rating    Float?   @default(0)
+  merchantId String @map("merchant_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  merchant        Merchant @relation(fields: [merchantId], references: [id])
+  supplierSkus    SupplierSKU[]
+  purchaseOrders  PurchaseOrder[]
+
+  @@map("suppliers")
+}
+
+model Cost {
+  id                    String   @id @default(cuid())
+  cogs                  Float
+  packaging             Float    @default(0)
+  inboundLogistics      Float    @default(0) @map("inbound_logistics")
+  lastUpdate            DateTime @default(now()) @map("last_update")
+  productId             String   @map("product_id")
+  createdAt             DateTime @default(now()) @map("created_at")
+  updatedAt             DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  product Product @relation(fields: [productId], references: [id])
+
+  @@map("costs")
+}
+
+model SupplierSKU {
+  id           String   @id @default(cuid())
+  supplierSku  String   @map("supplier_sku")
+  price        Float
+  moq          Int      @default(1)
+  leadDays     Int      @map("lead_days")
+  hasCert      Boolean  @default(false) @map("has_cert")
+  supplierId   String   @map("supplier_id")
+  productId    String   @map("product_id")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  supplier Supplier @relation(fields: [supplierId], references: [id])
+  product  Product  @relation(fields: [productId], references: [id])
+
+  @@unique([supplierId, productId])
+  @@map("supplier_skus")
+}
+
+model PurchaseOrder {
+  id           String   @id @default(cuid())
+  status       POStatus @default(DRAFT)
+  totalAmount  Float    @map("total_amount")
+  currency     String   @default("RUB")
+  merchantId   String   @map("merchant_id")
+  supplierId   String   @map("supplier_id")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  merchant        Merchant @relation(fields: [merchantId], references: [id])
+  supplier        Supplier @relation(fields: [supplierId], references: [id])
+  purchaseOrderLines PurchaseOrderLine[]
+
+  @@map("purchase_orders")
+}
+
+model PurchaseOrderLine {
+  id           String   @id @default(cuid())
+  quantity     Int
+  unitCost     Float    @map("unit_cost")
+  etaDate      DateTime? @map("eta_date")
+  poId         String   @map("po_id")
+  productId    String   @map("product_id")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  purchaseOrder PurchaseOrder @relation(fields: [poId], references: [id])
+  product       Product       @relation(fields: [productId], references: [id])
+
+  @@map("purchase_order_lines")
+}
+
+model ListingDraft {
+  id        String   @id @default(cuid())
+  version   Int
+  title     String
+  bullets   Json
+  description String
+  images    Json
+  status    DraftStatus @default(PENDING)
+  offerId   String   @map("offer_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  offer Offer @relation(fields: [offerId], references: [id])
+
+  @@map("listing_drafts")
+}
+
+model ABTest {
+  id              String   @id @default(cuid())
+  variantAId      String   @map("variant_a_id")
+  variantBId      String   @map("variant_b_id")
+  startTimestamp  DateTime @map("start_ts")
+  endTimestamp    DateTime? @map("end_ts")
+  winnerVariantId String?  @map("winner_variant_id")
+  offerId         String   @map("offer_id")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  offer Offer @relation(fields: [offerId], references: [id])
+
+  @@map("ab_tests")
+}
+
+model Incident {
+  id        String   @id @default(cuid())
+  type      IncidentType
+  severity  IncidentSeverity
+  context   Json
+  handledBy String?  @map("handled_by")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("incidents")
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  actorId   String   @map("actor_id")
+  scope     String
+  action    String
+  payload   Json
+  createdAt DateTime @default(now()) @map("created_at")
+
+  // Relations
+  actor User @relation(fields: [actorId], references: [id])
+
+  @@map("audit_logs")
+}
+
+// Enums
+
+enum UserRole {
+  OWNER
+  MANAGER
+  OPERATOR
+  READ_ONLY
+}
+
+enum MarketplaceType {
+  KASPI
+  WILDBERRIES
+  OZON
+  AMAZON
+}
+
+enum MarketplaceStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  ERROR
+}
+
+enum ListingStatus {
+  DRAFT
+  PUBLISHED
+  SUSPENDED
+  DELETED
+}
+
+enum PricingMode {
+  AUTO
+  MANUAL
+}
+
+enum POStatus {
+  DRAFT
+  APPROVED
+  SENT
+  CONFIRMED
+  SHIPPED
+  ARRIVED
+  CANCELLED
+}
+
+enum DraftStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  PUBLISHED
+}
+
+enum IncidentType {
+  INTEGRATION_ERROR
+  PRICING_VIOLATION
+  STOCK_CRITICAL
+  COMPLIANCE_ISSUE
+  SYSTEM_ERROR
+}
+
+enum IncidentSeverity {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}

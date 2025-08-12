@@ -1,0 +1,41 @@
+/* Скрываем стандартный курсор */
+body {
+  cursor: none;
+}
+
+/* Основной кастомный курсор */
+.custom-cursor {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #00F5D4; /* акцентный бирюзовый */
+  border-radius: 50%;
+  position: fixed;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 9999;
+  transition: transform 0.15s ease, background 0.3s ease, opacity 0.3s ease;
+  mix-blend-mode: difference; /* контраст на любом фоне */
+}
+
+/* При наведении на интерактивные элементы */
+.custom-cursor.active {
+  transform: translate(-50%, -50%) scale(1.6);
+  background: rgba(0, 245, 212, 0.15);
+  border-color: #00F5D4;
+}
+
+/* Эффект "пульс" при клике */
+.custom-cursor.click {
+  animation: pulse 0.3s forwards;
+}
+@keyframes pulse {
+  0% { transform: translate(-50%, -50%) scale(1.4); opacity: 0.8; }
+  100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+
+/* На мобилках скрываем курсор */
+@media (max-width: 768px) {
+  .custom-cursor {
+    display: none;
+  }
+} 
