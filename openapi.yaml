@@ -1,0 +1,225 @@
+openapi: 3.1.0
+info:
+  title: Kelisim AI API
+  version: 1.0.0
+  description: REST API для генерации и подписания договоров (M0)
+servers:
+  - url: https://localhost:8080
+paths:
+  /api/contracts:
+    post:
+      summary: Создать черновик договора
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [type, locale]
+              properties:
+                type:
+                  type: string
+                  enum: [rent, loan]
+                locale:
+                  type: string
+                  enum: [ru, kz]
+      responses:
+        '201':
+          description: Создано
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contract'
+  /api/contracts/{id}/fields:
+    post:
+      summary: Сохранить/нормализовать поля (AI)
+      parameters:
+        - in: path
+          name: id
+          schema: { type: string }
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                answers: { type: string, description: Свободный текст ответов }
+                fields: { $ref: '#/components/schemas/ContractFields' }
+      responses:
+        '200':
+          description: ОК
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Contract'
+  /api/contracts/{id}/preview:
+    get:
+      summary: Получить превью договора (HTML/PDF с водяным знаком)
+      parameters:
+        - in: path
+          name: id
+          schema: { type: string }
+          required: true
+      responses:
+        '200':
+          description: ОК
+          content:
+            text/html:
+              schema: { type: string }
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+  /api/contracts/{id}/pay:
+    post:
+      summary: Создать инвойс к оплате
+      parameters:
+        - in: path
+          name: id
+          schema: { type: string }
+          required: true
+      responses:
+        '200':
+          description: Ссылка/данные для оплаты
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  invoiceLink: { type: string }
+  /webhooks/payments/{provider}:
+    post:
+      summary: Вебхук платежа
+      parameters:
+        - in: path
+          name: provider
+          schema: { type: string }
+          required: true
+      responses:
+        '200': { description: ok }
+  /api/contracts/{id}/sign/a:
+    post:
+      summary: Подпись стороны A (Canvas + OTP)
+      parameters:
+        - in: path
+          name: id
+          schema: { type: string }
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [signaturePng, otp]
+              properties:
+                signaturePng: { type: string, description: DataURL PNG }
+                otp: { type: string }
+      responses:
+        '200': { description: ok }
+  /api/contracts/{id}/invite:
+    post:
+      summary: Создать приглашение для стороны B
+      parameters:
+        - in: path
+          name: id
+          schema: { type: string }
+          required: true
+      responses:
+        '200':
+          description: ОК
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  inviteUrl: { type: string }
+  /api/contracts/{id}/sign/b:
+    post:
+      summary: Подпись стороны B по токену приглашения
+      parameters:
+        - in: path
+          name: id
+          schema: { type: string }
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [signaturePng, otp, token]
+              properties:
+                token: { type: string }
+                signaturePng: { type: string }
+                otp: { type: string }
+      responses:
+        '200': { description: ok }
+  /verify/{publicId}:
+    get:
+      summary: Публичная верификация по QR
+      parameters:
+        - in: path
+          name: publicId
+          schema: { type: string }
+          required: true
+      responses:
+        '200':
+          description: ОК
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifyInfo'
+components:
+  schemas:
+    Contract:
+      type: object
+      properties:
+        id: { type: string }
+        publicId: { type: string }
+        type: { type: string, enum: [rent, loan] }
+        status: { type: string, enum: [draft, preview, paid, signed_a, signed_b, issued] }
+        templateVersion: { type: string }
+        fields: { $ref: '#/components/schemas/ContractFields' }
+        summaryRu: { type: string }
+        summaryKz: { type: string }
+    ContractFields:
+      type: object
+      properties:
+        parties:
+          type: array
+          items:
+            type: object
+            properties:
+              role: { type: string, enum: [landlord, tenant, lender, borrower] }
+              fullName: { type: string }
+              iin: { type: string }
+              phone: { type: string }
+        rent:
+          type: object
+          properties:
+            address: { type: string }
+            startDate: { type: string, format: date }
+            endDate: { type: string, format: date }
+            monthlyPriceKZT: { type: number }
+            depositKZT: { type: number }
+            utilitiesPayer: { type: string, enum: [landlord, tenant, split] }
+        loan:
+          type: object
+          properties:
+            amountKZT: { type: number }
+            issueDate: { type: string, format: date }
+            dueDate: { type: string, format: date }
+            penaltyPercentMonthly: { type: number }
+    VerifyInfo:
+      type: object
+      properties:
+        type: { type: string }
+        status: { type: string }
+        partiesMasked: { type: array, items: { type: string } }
+        signedAt:
+          type: array
+          items: { type: string, format: date-time }
+        docSha256: { type: string }
