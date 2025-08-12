@@ -1,49 +1,49 @@
-# Press Release – Safe Autopricing for Marketplace Sellers
+# Пресс-релиз — Безопасный автопрайсинг для продавцов на маркетплейсах
 
-Date: 2025-08-01
+Дата: 2025-08-01
 
-Today, AI Trading announces Safe Autopricing — an AI-driven pricing copilot for marketplace sellers (WB/Ozon/Amazon/eBay) that increases gross margin with strict guardrails. Safe Autopricing continuously forecasts demand, proposes price updates with margin floors and change limits, and lets managers approve or auto-publish with full audit. Early design partners achieved +8–15% gross profit in 8–12 weeks.
+Сегодня AI Trading объявляет о запуске Safe Autopricing — ИИ‑копилота ценообразования для продавцов на маркетплейсах (WB/Ozon/Amazon/eBay), который увеличивает валовую прибыль с жёсткими защитными ограничениями. Safe Autopricing непрерывно прогнозирует спрос, предлагает обновления цен с «полом» маржи и лимитами изменений, а менеджеры могут утверждать или включать автопубликацию, при этом все действия аудируются. Ранние дизайн‑партнёры достигли +8–15% к валовой прибыли за 8–12 недель.
 
-Customer quote (draft): “We finally got measurable profit uplift without risking our margins or getting rate-limited by the marketplace. The approve workflow and audit trail gave us confidence to go autopilot on 40% of our SKUs.”
+Отзывы клиентов (драфт): «Наконец-то получили измеримый рост прибыли без риска для маржи и банов со стороны маркетплейса. Процесс согласования и аудит вселили уверенность — перевели на автопилот 40% SKU».
 
-Call to action: Join our design partner program to unlock safe profit growth with your existing catalog and tools.
+Призыв к действию: присоединяйтесь к программе дизайн‑партнёров, чтобы разблокировать безопасный рост прибыли, не меняя ваши текущие каталоги и процессы.
 
 ---
 
 ## FAQ
 
-- What problem does it solve?
-  - Sellers miss profit by under/overpricing and reacting late to market changes. Manual pricing doesn’t scale across thousands of SKUs and marketplaces.
+- Какую проблему это решает?
+  - Продавцы теряют прибыль из‑за недо/переценки и поздних реакций на рынок. Ручное ценообразование не масштабируется на тысячи SKU и несколько маркетплейсов.
 
-- What is the product?
-  - A pricing copilot that: ingests sales/stock/competitor data → forecasts demand → proposes price updates with guardrails → optional human approve → publishes and measures uplift.
+- Что это за продукт?
+  - Копилот ценообразования: получает продажи/остатки/конкурентов → строит прогноз → предлагает цены с защитами → по желанию — ручное утверждение → публикует и считает эффект.
 
-- Why now?
-  - Marketplaces expose richer APIs, sellers face tighter margins, and modern TS/ML models (Darts/NeuralForecast/EconML) enable reliable demand and elasticity estimates.
+- Почему сейчас?
+  - У маркетплейсов зрелые API, у продавцов давление на маржу, а современные библиотеки временных рядов/ML (Darts/NeuralForecast/EconML) дают стабильные оценки спроса и эластичности.
 
-- Who is it for (ICP)?
-  - Sellers with 200–3,000 SKUs on WB/Ozon (phase 1), gross margin 15–40%, at least basic data exports or API access.
+- Для кого (ICP)?
+  - Продавцы с 200–3 000 SKU на WB/Ozon (фаза 1), валовая маржа 15–40%, есть базовые выгрузки или API‑доступ.
 
-- What outcomes do customers get?
-  - Target +8–15% gross profit uplift within 8–12 weeks on covered SKUs, with strict safety rails and auditability.
+- Какие результаты получает клиент?
+  - Цель: +8–15% к валовой прибыли за 8–12 недель на покрытых SKU при строгих защитах и полной трассировке.
 
-- What are the guardrails?
-  - Margin floor per SKU/brand, max price change per update, max frequency per SKU/MP, stock-aware logic, promo/holiday awareness, stop-lists, manual overrides, one-click rollback.
+- Какие защитные ограничения (guardrails)?
+  - Пол маржи на SKU/бренд, максимальный шаг изменения цены, ограничение частоты изменений, учёт остатков, сезонов/промо, стоп‑листы, ручные оверрайды, откат одним кликом.
 
-- How is uplift measured?
-  - A/B by SKU cohorts; primary metric: added gross profit vs control; counter-metrics: cancelations/returns, price volatility, publication failures, complaint rate.
+- Как измеряется эффект?
+  - A/B по когортам SKU; основная метрика — добавленная валовая прибыль vs контроль; контр‑метрики — возвраты/отмены, волатильность цен, сбои публикаций, жалобы.
 
-- What does integration look like?
-  - Read-only ingestion first (orders, prices/discounts, stock, promo, competitor prices). Then propose-only with human approve. Then autopublish under flags. All actions logged.
+- Как выглядит интеграция?
+  - Сначала read‑only инжест (заказы, цены/скидки, остатки, промо, конкуренты). Затем режим «только предложения» с ручным утверждением. Затем — автопубликация под фичфлагами. Все действия логируются.
 
-- Security & compliance?
-  - Least-privilege tokens, secret vaulting, audit logs, PII minimization/retention policy, GDPR/CCPA DSAR procedures, marketplace ToS compliance.
+- Безопасность и соответствие требованиям?
+  - Минимально необходимые права доступа, хранение секретов в хранилище, аудит, минимизация ПДн/политика хранения, процедуры GDPR/CCPA (DSAR), соблюдение ToS маркетплейсов.
 
-- How do we charge?
-  - Option A: 2–5% of added gross profit (success fee). Option B: base fee + success bonus. Pilot discounts for design partners.
+- Как мы зарабатываем?
+  - Вариант A: 2–5% от добавленной валовой прибыли (success fee). Вариант B: базовая подписка + бонус за результат. Для дизайн‑партнёров — пилотные условия.
 
-- What might go wrong and how do we mitigate?
-  - API limits/bans → rate-limiters, backoff, shadow mode. Model drift → drift monitors, safe mode (freeze/limit deltas). Data gaps → validation and fail-closed behavior.
+- Что может пойти не так и как мы это страхуем?
+  - Лимиты/баны API → rate‑limit, backoff, shadow‑режим. Дрифт модели → мониторинг, safe mode (заморозка/лимит дельт). Пробелы в данных → валидация и fail‑closed поведение.
 
-- Timeline for MVP?
-  - 8–12 weeks to productionize the basic loop on 2–3 design partners: ingestion → forecast → proposal → approve → publish → audit → uplift report.
+- Таймлайн MVP?
+  - 8–12 недель до продакшена базовой ценностной петли на 2–3 дизайн‑партнёрах: инжест → прогноз → предложение → утверждение → публикация → аудит → отчёт об эффекте.

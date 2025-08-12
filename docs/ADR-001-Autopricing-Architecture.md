@@ -1,27 +1,27 @@
-# ADR-001 – Autopricing Architecture Split (ml-service vs core-api)
+# ADR-001 – Разделение архитектуры автопрайсинга (ml-service vs core-api)
 
-## Context
-We need a safe, explainable autopricing loop. Our stack includes `ml-service` (FastAPI, Python TS/ML) and `core-api` (NestJS, Prisma, queues, integrations). Marketplaces impose rate limits and strict ToS; we need auditability and quick rollback.
+## Контекст
+Нужна безопасная и объяснимая петля автопрайсинга. Наш стек: `ml-service` (FastAPI, Python, ВР/ML) и `core-api` (NestJS, Prisma, очереди, интеграции). Маркетплейсы жёстко лимитируют API и требуют соблюдения ToS; нам нужны аудит и быстрый откат.
 
-## Decision
-- Keep forecasting/optimization in `ml-service` (Python): demand forecasts, elasticity estimation (later), price optimization with guardrails (OR-Tools), rationale generation.
-- Keep orchestration/integrations in `core-api` (TypeScript): rules storage, approvals, publication workers (BullMQ), audit logs, RBAC, secrets, rate-limiting.
-- FE (`web-app`) consumes `core-api` only; `core-api` calls `ml-service`.
+## Решение
+- Держать прогнозирование/оптимизацию в `ml-service` (Python): прогноз спроса, оценка эластичности (позже), оптимизация цены с защитами (OR-Tools), обоснование.
+- Держать оркестрацию/интеграции в `core-api` (TypeScript): хранилище правил, утверждения, воркеры публикаций (BullMQ), аудит, RBAC, секреты, rate‑limit.
+- FE (`web-app`) ходит только в `core-api`; `core-api` вызывает `ml-service`.
 
-## Rationale
-- Python ecosystem fits TS/ML; Node fits integrations, queues, RBAC, and our FE team.
-- Separation lets us scale compute-heavy inference independently and keep credentials in one place (core-api).
-- Improves blast radius: model issues won’t compromise audit/integrations; vice versa.
+## Обоснование
+- Python лучше для ВР/ML; Node — для интеграций, очередей, RBAC и команды FE.
+- Разделение позволяет независимо масштабировать расчёты и держать креды в одном месте (`core-api`).
+- Снижает зону поражения: проблемы модели не ломают аудит/интеграции (и наоборот).
 
-## Consequences
-- Two deployables and contracts to maintain; add OpenAPI specs and versioning.
-- Extra network hop between services; mitigate with caching and batch endpoints.
-- Clearer ownership and on-call routing: ML vs Integrations.
+## Последствия
+- Два сервиса и контракты между ними; нужны OpenAPI и версионирование.
+- Дополнительный сетевой хоп; смягчаем кэшированием и батч‑эндпоинтами.
+- Чёткая зона ответственности и он‑колл: ML vs Интеграции.
 
-## Status
-Accepted. Revisit after first 2 pilots.
+## Статус
+Принято. Пересмотреть после первых 2 пилотов.
 
-## Follow-ups
-- Publish OpenAPI for `/forecast` and `/price/proposal`.
-- Define queue schemas and idempotency keys for publication jobs.
-- Add drift monitoring and safe-mode circuit breaker.
+## Последующие шаги
+- Опубликовать OpenAPI для `/forecast` и `/price/proposal`.
+- Определить схемы очередей и ключи идемпотентности для публикаций.
+- Добавить мониторинг дрифта и предохранитель safe‑mode.

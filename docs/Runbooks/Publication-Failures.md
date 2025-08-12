@@ -1,28 +1,28 @@
-# Runbook – Price Publication Failures
+# Руководство по инцидентам — Сбои публикации цен
 
-## Symptoms
-- Publish job failures >1%, persistent retries, inconsistent prices
+## Симптомы
+- Неуспехи задач публикации >1%, постоянные ретраи, расхождения цен
 
-## Immediate Actions
-1. Enable safe mode: freeze risky SKUs; cap delta
-2. Retry with idempotency keys; ensure latest state fetched before update
-3. Validate auth tokens and scopes
+## Немедленные действия
+1. Включить safe‑mode: заморозить рискованные SKU; ограничить дельту
+2. Повторить с идемпотентными ключами; перед обновлением получить актуальное состояние
+3. Проверить валидность токенов и скоупов
 
-## Diagnosis
-- Diff local vs MP price; check conflicts with manual updates
-- Inspect payload schema changes, currency/vat mismatches
-- Review MP error codes; check change-frequency limits
+## Диагностика
+- Сравнить локальные и MP‑цены; конфликты с ручными изменениями
+- Проверить схемы payload, валюту/VAT
+- Разобрать коды ошибок MP; лимиты частоты изменений
 
-## Remediation
-- Fix mapping, currency normalization, rounding
-- Add preflight checks and optimistic concurrency
-- Strengthen idempotency and reconciliation jobs
+## Устранение
+- Исправить маппинг, нормализацию валют, округление
+- Добавить preflight‑проверки и оптимистичную конкуренцию
+- Усилить идемпотентность и reconcile‑джобы
 
-## Rollback
-- Revert to last known stable prices (snapshot)
+## Откат
+- Вернуть последние стабильные цены (снэпшот)
 
-## Verification
-- Success rate >99%, audit trail consistent
+## Верификация
+- Успешность >99%, аудит консистентен
 
-## Owner & Escalation
-- Backend Lead; escalate to Founder if >2h impact
+## Владелец и эскалация
+- Бэкенд‑лид; эскалация к фаундеру при влиянии >2 часов

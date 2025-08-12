@@ -1,16 +1,16 @@
-# Roadmap – 30 / 60 / 90 Days
+# Дорожная карта — 30 / 60 / 90 дней
 
-## Day 0–30
-- MVP loop live with 2 partners (ingest → forecast → proposals → approve → publish → audit)
-- Coverage: 20–30% SKUs; publication success >99%
-- First case study (uplift snapshot)
+## День 0–30
+- Запуск MVP‑петли с 2 партнёрами (инжест → прогноз → предложения → утверждение → публикация → аудит)
+- Покрытие: 20–30% SKU; успешность публикаций >99%
+- Первый кейс (снэпшот эффекта)
 
-## Day 31–60
-- Add elasticity/causal estimation for top SKUs (EconML/NeuralForecast)
-- Increase autopublish share to 30–40% with strict guardrails
-- Second MP integration or deeper competitor prices
+## День 31–60
+- Добавить оценку эластичности/каузальности для топ‑SKU (EconML/NeuralForecast)
+- Увеличить долю автопубликации до 30–40% при строгих защитах
+- Второй маркетплейс или более глубокие цены конкурентов
 
-## Day 61–90
-- Replenishment drafts (PO suggestions from forecast + constraints)
-- Full traceability: decision → publish → outcome reports
-- Commercial pilot packaging: SLA, pricing, onboarding
+## День 61–90
+- Черновики закупок (PO) на базе прогноза + ограничений
+- Полная трассировка: решение → публикация → результат
+- Упаковка коммерческого пилота: SLA, прайсинг, онбординг

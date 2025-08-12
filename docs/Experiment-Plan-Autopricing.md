@@ -1,32 +1,32 @@
-# Experiment Plan – Autopricing (A/B by SKU)
+# План эксперимента — Автопрайсинг (A/B по SKU)
 
-## Hypothesis
-Safe Autopricing increases gross profit per SKU without harming customer experience metrics.
+## Гипотеза
+Безопасный автопрайсинг увеличивает валовую прибыль на SKU без ухудшения клиентских метрик.
 
-## Design
-- Randomize SKUs into Control and Treatment (balanced by category/price/velocity)
-- Horizon: 6–8 weeks; min 2 seasonality cycles if applicable
-- Guardrails in Treatment: margin floor, max delta, max frequency, stock-aware
-- Control: current pricing process, no automated changes
+## Дизайн
+- Случайное разделение SKU на Контроль и Тест (баланс по категории/цене/скорости)
+- Горизонт: 6–8 недель; минимум 2 сезонных цикла при наличии
+- Защиты в Тесте: пол маржи, лимит дельты, лимит частоты, чувствительность к остаткам
+- Контроль: текущий процесс ценообразования, без автоматических изменений
 
-## Metrics
-- Primary: Added gross profit per SKU (G = Revenue × GrossMargin%)
-- Secondary: revenue, units, contribution margin after fees
-- Counters: returns, cancelations, publication failures, price volatility, stockouts
+## Метрики
+- Основная: добавленная валовая прибыль на SKU (G = Выручка × %Валовой маржи)
+- Вторичные: выручка, штуки, вклад после комиссий
+- Контр‑метрики: возвраты, отмены, сбои публикаций, волатильность цен, стоки
 
-## Statistical Plan
-- Pre-register metrics and stop rules; use CUPED/CAA to reduce variance
-- Power analysis for detectable effect size (back-of-envelope by historical variance)
-- Weekly interim looks; do not peek repeatedly without correction
+## Статистический план
+- Пререгистрация метрик и правил остановки; использовать CUPED/CAA для снижения дисперсии
+- Оценка мощности для детектируемого эффекта (по исторической дисперсии)
+- Еженедельные промежуточные срезы; избегать многократного «подглядывания» без поправок
 
-## Execution
-- Shadow mode for 1 week to validate proposals without publishing
-- Start with 20–30% SKU coverage; ramp to 40–60%
-- Manual approve first; then partial autopublish under flags
+## Исполнение
+- Shadow‑режим 1 неделю: валидируем предложения без публикации
+- Старт с покрытия 20–30% SKU; рост до 40–60%
+- Сначала ручное утверждение; затем частичная автопубликация под фичфлагами
 
-## Stop/Freeze Conditions
-- Publication failure rate >2% for 15 min → freeze & rollback
-- Negative uplift beyond threshold for 2 consecutive weeks → pause & review
+## Условия паузы/заморозки
+- Сбой публикаций >2% за 15 мин → freeze & rollback
+- Отрицательный эффект ниже порога 2 недели подряд → пауза и разбор
 
-## Reporting
-- Weekly report with cohort breakdown, confidence intervals, and root causes of deltas
+## Отчётность
+- Недельный отчёт с разрезом по когортам, доверительными интервалами и корневыми причинами отклонений

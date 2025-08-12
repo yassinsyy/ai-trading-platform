@@ -1,34 +1,34 @@
-# Two-Week Execution Checklist
+# Чек‑лист на 2 недели
 
-## Strategy & Partners
-- [ ] Fix ICP and primary marketplace (WB or Ozon)
-- [ ] Sign NDA/DPA with 2–3 design partners
-- [ ] Agree data scope and export schedules
+## Стратегия и партнёры
+- [ ] Зафиксировать ICP и основной маркетплейс (WB или Ozon)
+- [ ] Подписать NDA/DPA с 2–3 дизайн‑партнёрами
+- [ ] Согласовать объём данных и график выгрузок
 
-## Product Docs
-- [ ] PR-FAQ (this repo)
-- [ ] PRD one-pager
-- [ ] SoW for pilot signed by partners
+## Продуктовая документация
+- [ ] PR‑FAQ (в этом репо)
+- [ ] PRD one‑pager
+- [ ] SoW пилота, подписанный партнёрами
 
-## Tech – ml-service
-- [ ] /forecast endpoint (baseline: Darts/Prophet)
-- [ ] /price/proposal with guardrails (margin floor, delta, frequency)
-- [ ] Unit tests and drift monitor stub
+## Технологии — ml-service
+- [ ] Эндпоинт /forecast (базовый: Darts/Prophet)
+- [ ] Эндпоинт /price/proposal с защитами (пол маржи, дельта, частота)
+- [ ] Юнит‑тесты и зачатки мониторинга дрифта
 
-## Tech – core-api
-- [ ] Entities: PriceRule, PriceProposal, PriceChange, AuditLog
-- [ ] Approve/publish endpoints; BullMQ jobs; idempotency
-- [ ] Metrics & alerts: publication success, latency, backlog
+## Технологии — core-api
+- [ ] Сущности: PriceRule, PriceProposal, PriceChange, AuditLog
+- [ ] Эндпоинты approve/publish; задания BullMQ; идемпотентность
+- [ ] Метрики и алёрты: успешность публикаций, задержка, бэклог
 
-## Tech – web-app
-- [ ] Pricing Proposals screen (list → diff → approve → publish)
-- [ ] Uplift dashboard (weekly, by cohort/SKU)
+## Технологии — web-app
+- [ ] Экран «Предложения цен» (список → дифф → утверждение → публикация)
+- [ ] Дашборд эффекта (недельно, по когортам/SKU)
 
-## Security & Ops
-- [ ] RBAC, secret vaulting, token scopes per MP
-- [ ] Structured logs, dashboards, alert policies
-- [ ] Runbooks for rate-limit, publication failures, model degradation
+## Безопасность и операционка
+- [ ] RBAC, хранилище секретов, скоупы токенов по MP
+- [ ] Структурные логи, дашборды, политики алёртов
+- [ ] Ранбуки для rate‑limit, сбоев публикаций, деградации модели
 
-## Go/No-Go
-- [ ] Shadow mode dry-run 1 week
-- [ ] Pilot start with 20–30% SKU coverage
+## Go/No‑Go
+- [ ] Shadow‑режим 1 неделя
+- [ ] Старт пилота с покрытием 20–30% SKU

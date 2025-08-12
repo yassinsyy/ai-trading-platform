@@ -1,33 +1,33 @@
-# Data Specification – Ingestion & Validation
+# Спецификация данных — Инжест и валидация
 
-## Datasets & Required Fields
-- Orders: orderId, skuId, mp, datetime, price, quantity, fees, discount, promoFlag, status, returnFlag
-- Prices: skuId, mp, datetime, price, discount, currency
-- Stock: skuId, mp, datetime, onHand, reserved, inboundEta
-- Catalog: skuId, brand, category, cost, vat, dimensions, barcodes
-- Competitor Prices: skuId (mapped), mp, competitorId, datetime, price, availability
-- Promotions/Calendar: holiday flags, promo windows
+## Наборы данных и обязательные поля
+- Заказы: orderId, skuId, mp, datetime, price, quantity, fees, discount, promoFlag, status, returnFlag
+- Цены: skuId, mp, datetime, price, discount, currency
+- Остатки: skuId, mp, datetime, onHand, reserved, inboundEta
+- Каталог: skuId, brand, category, cost, vat, dimensions, barcodes
+- Цены конкурентов: skuId (маппинг), mp, competitorId, datetime, price, availability
+- Промо/Календарь: флаги праздников, окна промо
 
-## Schedules
-- Pull frequency: hourly for prices/stock; daily for orders and competitors (phase 1)
-- Backfill: 12–24 months history
+## Расписания
+- Частота: цены/остатки — почасово; заказы и конкуренты — раз в день (фаза 1)
+- Бекфилл: история 12–24 месяца
 
-## Validation Rules (examples)
-- Monotonic datetime; no future timestamps >5 min
-- Currency normalization; VAT/cost present for pricing SKUs
-- Stock non-negative; inboundEta sane
-- Deduplicate by (skuId, mp, datetime)
+## Правила валидации (примеры)
+- Монотонное время; нет будущих меток >5 мин
+- Нормализация валют; VAT/себестоимость для SKU, где считаем цены
+- Остаток неотрицателен; inboundEta адекватен
+- Дедуп по (skuId, mp, datetime)
 
-## Storage & Access
-- Raw zone (immutable), validated zone, feature tables
-- Access via service account; PII minimized; retention 180 days unless contract says otherwise
+## Хранение и доступ
+- Зона raw (неизменяемая), зона validated, витрины признаков
+- Доступ через сервисный аккаунт; минимизация ПДн; ретеншн 180 дней (если договором не иначе)
 
-## Quality KPIs & Alerts
-- Freshness SLAs: prices/stock <15 min lag, orders <24h
-- Completeness >99%; alert on gaps >1% or spikes in nulls
+## KPI качества и алёрты
+- Свежесть: цены/остатки лаг <15 мин, заказы <24ч
+- Полнота >99%; алёрт на пропуски >1% или всплеск null
 
-## Mapping & IDs
-- SKU mapping table (aliases across MP), unit conversions, variant handling
+## Маппинг и идентификаторы
+- Таблица маппинга SKU (алиасы по MP), конвертация единиц, варианты товара
 
-## Notes
-- Start read-only; escalate privileges only for publishing stage under RBAC.
+## Примечания
+- Старт в режиме read‑only; повышать права только для публикации под RBAC.

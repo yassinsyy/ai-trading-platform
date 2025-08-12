@@ -1,42 +1,42 @@
-# Statement of Work – Design Partner Pilot (Template)
+# Описание работ — Пилот с дизайн‑партнёром (Шаблон)
 
-## Parties
-- Provider: AI Trading
-- Client: <Client Name>
+## Стороны
+- Исполнитель: AI Trading
+- Клиент: <Название клиента>
 
-## Objectives
-- Demonstrate added gross profit uplift of +8–15% on covered SKUs within 8–12 weeks, with strict guardrails and full auditability.
+## Цели
+- Демонстрация прироста валовой прибыли на +8–15% по покрытым SKU за 8–12 недель при строгих защитах и полной трассировке.
 
-## Scope & Deliverables
-- Data ingestion (read-only) for orders, prices/discounts, stock, promo, competitor prices
-- Pricing proposals with guardrails; approve/publish workflow
-- Weekly uplift report and incident reports
-- Security: RBAC, audit logs, token vaulting
+## Объём и результаты
+- Инжест данных (read‑only): заказы, цены/скидки, остатки, промо, цены конкурентов
+- Предложения цен с защитами; процесс утверждения/публикации
+- Недельный отчёт по эффекту и отчёты об инцидентах
+- Безопасность: RBAC, аудит, хранение токенов
 
-## Timeline & Milestones
-- Week 1–2: Integration & data validation
-- Week 3–4: Forecasting + proposals
-- Week 5–6: Publish + audit + uplift reporting
-- Week 7–8: Stabilization & expanded coverage
+## Таймлайн и вехи
+- Недели 1–2: интеграция и валидация данных
+- Недели 3–4: прогнозирование + предложения
+- Недели 5–6: публикация + аудит + отчёт об эффекте
+- Недели 7–8: стабилизация и расширение покрытия
 
-## Success Criteria
-- Primary: added gross profit uplift vs control cohort
-- Operational: >99% publication success, <24h approval cycle, <1% incident rate
+## Критерии успеха
+- Основная: добавленная валовая прибыль vs контрольная когорта
+- Операционные: успешность публикаций >99%, цикл утверждения <24ч, инциденты <1%
 
-## Client Responsibilities
-- Provide 12–24 months historical data and API tokens
-- Nominate a point of contact for approvals and incident response
+## Обязанности клиента
+- Предоставить 12–24 месяца истории и API‑токены
+- Назначить контактное лицо для утверждений и инцидентов
 
-## Commercials
-- Option A: 2–5% of added gross profit (success fee)
-- Option B: base fee + success bonus
+## Коммерческие условия
+- Вариант A: 2–5% от добавленной валовой прибыли (success fee)
+- Вариант B: базовая ставка + бонус за результат
 
-## Data Protection & Compliance
-- NDA/DPA, retention policy, PII minimization, GDPR/CCPA DSAR handling
+## Защита данных и комплаенс
+- NDA/DPA, политика хранения, минимизация ПДн, обработка запросов GDPR/CCPA (DSAR)
 
-## Termination / Kill Criteria
-- If uplift < target by week 6 without exogenous factors, parties review scope; either adjust or terminate without penalties.
+## Прекращение / Kill‑критерии
+- Если к 6‑й неделе эффект ниже цели без внешних факторов — пересмотр объёма; корректировка или прекращение без штрафов.
 
-## Signatures
-- Provider: __________________  Date: ____
-- Client:   __________________  Date: ____
+## Подписи
+- Исполнитель: __________________  Дата: ____
+- Клиент:     __________________  Дата: ____

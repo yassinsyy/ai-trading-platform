@@ -1,27 +1,27 @@
-# Runbook – Marketplace Rate Limits
+# Руководство по инцидентам — Лимиты запросов маркетплейса
 
-## Symptoms
-- 429/Too Many Requests; rising latency; backoff headers present
+## Симптомы
+- 429/Too Many Requests; рост задержек; заголовки с backoff
 
-## Immediate Actions
-1. Activate per-MP circuit breaker → freeze non-critical updates
-2. Reduce concurrency; honor backoff headers
-3. Switch to batch updates where available
+## Немедленные действия
+1. Включить circuit breaker по MP → заморозить некритичные обновления
+2. Снизить конкуренцию; строго соблюдать backoff
+3. Перейти на пакетные обновления, если поддерживается
 
-## Diagnosis
-- Check request rates vs MP quotas; identify noisy jobs/SKUs
-- Review recent code changes/deploys; correlate with spikes
+## Диагностика
+- Сверить скорость запросов с квотами; найти «шумные» задания/SKU
+- Проверить свежие релизы/деплои; сопоставить со всплесками
 
-## Remediation
-- Tune global/local rate-limits; add jitter and backoff
-- Schedule heavy jobs off-peak; shard queues
-- Coordinate with MP if repeated
+## Устранение
+- Настроить глоб/лок rate‑limits; добавить джиттер и backoff
+- Планировать тяжёлые задания «вне часа пик»; шардировать очереди
+- Связаться с MP при повторении
 
-## Rollback
-- One-click freeze of publishing; keep proposals only
+## Откат
+- Заморозка публикаций одним кликом; оставлять только предложения
 
-## Verification
-- Error rate <0.5%, latency normal, backlog draining
+## Верификация
+- Ошибок <0.5%, задержка нормализована, бэклог убывает
 
-## Owner & Escalation
-- Integrations Lead; escalate to Founder if >1h impact
+## Владелец и эскалация
+- Лид интеграций; эскалация к фаундеру при влиянии >1 часа

@@ -1,28 +1,28 @@
-# Runbook – Model Degradation / Drift
+# Руководство по инцидентам — Деградация/дрифт модели
 
-## Symptoms
-- Uplift drops, forecast error spikes, alerts on drift metrics
+## Симптомы
+- Падает эффект, растёт ошибка прогноза, срабатывают алёрты дрифта
 
-## Immediate Actions
-1. Switch to baseline model or freeze autopublish
-2. Narrow coverage to top-performing cohorts
-3. Increase manual approvals temporarily
+## Немедленные действия
+1. Переключиться на базовую модель или заморозить автопубликацию
+2. Суже́ние покрытия до лучших когорт
+3. Временно увеличить долю ручных утверждений
 
-## Diagnosis
-- Inspect data freshness/completeness; schema changes
-- Check seasonal effects/promo shifts; feature drift
-- Compare recent forecasts vs baseline/backtests
+## Диагностика
+- Проверить свежесть/полноту данных; изменения схем
+- Оценить сезонность/сдвиги промо; дрейф признаков
+- Сравнить свежие прогнозы с baseline/бэктестами
 
-## Remediation
-- Retrain with recent windows; recalibrate guardrails
-- Add/new features (promo, competitor signals), regularization
-- Re-run model selection; A/B new candidate under flags
+## Устранение
+- Перетренировать на свежих окнах; перекалибровать защиты
+- Добавить/обновить признаки (промо, конкуренты), регуляризация
+- Повторный выбор модели; A/B нового кандидата под фичфлагами
 
-## Rollback
-- Use last stable model checkpoint; reduce delta caps
+## Откат
+- Использовать последний стабильный чекпойнт; снизить лимиты дельт
 
-## Verification
-- Uplift back within CI; forecast error normalized
+## Верификация
+- Эффект вернулся в доверительный интервал; ошибка прогноза нормализована
 
-## Owner & Escalation
-- ML Lead; escalate to Founder if >1 week unresolved
+## Владелец и эскалация
+- ML‑лид; эскалация к фаундеру, если не решено >1 недели
